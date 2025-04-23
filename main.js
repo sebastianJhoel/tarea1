@@ -1,5 +1,7 @@
 const taskConatiner = document.getElementById("app");
 
+
+
 class Task {
   constructor(name, description, dueDate) {
     this.id = Math.floor(Math.random() * 10000);
@@ -11,7 +13,7 @@ class Task {
   }
 
   static buildTaskCard(task) {
-    return `<div class="glass-card rounded-lg p-4 mb-4 flex flex-col">
+    return <div class="glass-card rounded-lg p-4 mb-4 flex flex-col">
                         <div class="flex justify-between items-start mb-2">
                             <div class="flex items-center gap-3">
                                 <div class="task-status" style="background: ${
@@ -54,35 +56,49 @@ class Task {
                                 }%"></div>
                             </div>
                         </div>
-                    </div>`;
+                    </div>;
   }
 }
 
 // Lista de tareas mockeadas
+
 let tasks = taskTitles.map((title, index) => {
   return new Task(title, taskDescriptions[index], getRandomFutureDate());
 });
 
 function loadData() {
   // implementar el renderizado de las tareas
+    if (tasks.length > 0) {
+        // implementar el renderizado de las tareas
+        taskConatiner.innerHTML = tasks
+          .map((task) =>
+            Task.buildTaskCard(task)
+          )
+          .join("");
+      } else {
+        taskConatiner.innerHTML = <div class="text-center text-gray-400 text-2xl">No hay tareas</div>;
+      }
 }
+const taskNameInput = document.getElementById("task-name");
+    const taskDescriptionInput = document.getElementById("task-description");
+    const taskDueDateInput = document.getElementById("task-due-date");
 
-function postData(event) {
-  event.preventDefault();
-
-  try {
-    // Get form data
-
-    saveTask(task);
+    const name = taskNameInput.value;
+    const description = taskDescriptionInput.value;
+    const dueDate = taskDueDateInput.value;
+    saveTask(newTask);
     form.reset();
     const modal = document.getElementById("task-modal");
     modal.checked = false;
-    showNotification("Tarea añadida correctamente!");
+    showNotification("tarea añadida correctamente");
   } catch (error) {
-    showNotification("Error al añadir la tarea. Inténtalo de nuevo.");
+    showNotification("error al añadir la tarea");
+    console.error("Error en postData:", error);
   }
 }
-
+const form = document.querySelector('form');
+  form.addEventListener('submit', postData);
+}
 /**
  *
  * task actions
@@ -91,14 +107,15 @@ function postData(event) {
 
 function saveTask(task) {
   // implementar la creación de la tarea
-  console.log(task);
-
+  task.push(task);
+  console.log("tarea guardado",task);
   loadData();
 }
 
 function deleteTask(id) {
   // implementar la eliminación de la tarea
-
+    task.delete(task);
+    console.log("la tarea se borro",task)
   loadData();
 }
 
